@@ -105,48 +105,104 @@ content = {"red": 12, "green": 13, "blue": 14}
 result = 0
 
 for game in data.split('\n'):
-    colors = {"red": 0, "green": 0, "blue": 0}
-    for results in game[7:].split(";"):
-
-        for color in results.split(","):
-            if "red" in color:
-                for i in range(len(color)):
+    ok = True
+    game_id = 0
+    game_dep = None
+    try:
+        game_id = int(game[5:8])
+        game_dep = int(game[:8])
+    except ValueError:
+        game_id = int(game[5])
+        game_dep = game[7:]
+    print(game_dep)
+    while ok:
+        for results in game_dep.split(";"):
+            for color in results.split(","):
+                if "red" in color:
                     try:
-                        int(color[i])
-                        try:
-                            colors['red'] += int(f"{int(color[i])}{int(color[i + 1])}")
-                            break
-                        except ValueError:
-                            colors['red'] += int(color[i])
+                        if int(f"{color[1]}{color[2]}") > content['red']:
+                            ok = False
                     except ValueError:
-                        pass
-            elif "green" in color:
-                for i in range(len(color)):
+                        if int(color[1]) > content['red']:
+                            ok = False
+                if "green" in color:
                     try:
-                        int(color[i])
-                        try:
-                            colors['green'] += int(f"{int(color[i])}{int(color[i + 1])}")
-                            break
-                        except ValueError:
-                            colors['green'] += int(color[i])
+                        if int(f"{color[1]}{color[2]}") > content['green']:
+                            ok = False
                     except ValueError:
-                        pass
-            else:
-                for i in range(len(color)):
+                        if int(color[1]) > content['green']:
+                            ok = False
+                if "blue" in color:
                     try:
-                        int(color[i])
-                        try:
-                            colors['blue'] += int(f"{int(color[i])}{int(color[i + 1])}")
-                            break
-                        except ValueError:
-                            colors['blue'] += int(color[i])
+                        if int(f"{color[1]}{color[2]}") > content['blue']:
+                            ok = False
+                        else:
+                            pass
                     except ValueError:
-                        pass
-    if colors["red"] < content["red"] and colors["green"] < content["green"] and colors["blue"] < content["blue"]:
-        try:
-            result += int(game[5:7])
-        except ValueError:
-            result += int(game[5])
-
+                        print(color[1])
+                        if int(color[1]) > content['blue']:
+                            ok = False
+        if ok:
+            result += game_id
+        ok = False
 
 print(result)
+
+
+
+
+
+
+
+
+# for game in data.split('\n'):
+#     colors = {"red": 0, "green": 0, "blue": 0}
+#     for results in game[7:].split(";"):
+#         for color in results.split(","):
+#             if "red" in color:
+#                 for i in range(len(color)):
+#                     try:
+#                         int(color[i])
+#                         try:
+#                             colors['red'] += int(f"{int(color[i])}{int(color[i + 1])}")
+#                             break
+#                         except ValueError:
+#                             colors['red'] += int(color[i])
+#                     except ValueError:
+#                         pass
+#             elif "green" in color:
+#                 for i in range(len(color)):
+#                     try:
+#                         int(color[i])
+#                         try:
+#                             colors['green'] += int(f"{int(color[i])}{int(color[i + 1])}")
+#                             break
+#                         except ValueError:
+#                             colors['green'] += int(color[i])
+#                     except ValueError:
+#                         pass
+#             else:
+#                 for i in range(len(color)):
+#                     try:
+#                         int(color[i])
+#                         try:
+#                             colors['blue'] += int(f"{int(color[i])}{int(color[i + 1])}")
+#                             break
+#                         except ValueError:
+#                             colors['blue'] += int(color[i])
+#                     except ValueError:
+#                         pass
+#     print(colors)
+#     print(game[:7])
+#     print(colors["red"] < content["red"])
+#     print(colors["green"] < content["green"])
+#     print(colors["blue"] < content["blue"])
+#     if colors["red"] < content["red"] and colors["green"] < content["green"] and colors["blue"] < content["blue"]:
+#         try:
+#             result += int(game[5:7])
+#             print(int(game[5:7]))
+#         except ValueError:
+#             result += int(game[5])
+#             print(int(game[5]))
+#
+# print(result)
