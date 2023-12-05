@@ -1,4 +1,4 @@
-inputs = """rhqrpdxsqhgxzknr2foursnrcfthree
+inps = """rhqrpdxsqhgxzknr2foursnrcfthree
 2bmckl
 four95qvkvveight5
 2tqbxgrrpmxqfglsqjkqthree6nhjvbxpflhr1eightwohr
@@ -999,7 +999,7 @@ eight5gmbzbqtxrr27dtgfdbmtc7
 twoggvcnfmtrseven4dx
 ssevenhcltwoseven2cxrmxxcr"""
 
-words =  inputs.split("\n")
+words = inps.split("\n")
 integers = []
 for word in words:
     integ = []
@@ -1012,7 +1012,7 @@ for word in words:
     integers.append(integ)
 
 tot = 0
-for integer in integers :
+for integer in integers:
     tot = tot + integer
 
 print(tot)
