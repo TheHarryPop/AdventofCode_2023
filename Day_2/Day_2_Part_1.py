@@ -106,15 +106,18 @@ result = 0
 
 for game in data.split('\n'):
     ok = True
-    game_id = 0
+    game_id = game[5:8]
     game_dep = None
-    try:
-        game_id = int(game[5:8])
-        game_dep = int(game[:8])
-    except ValueError:
-        game_id = int(game[5])
-        game_dep = game[7:]
-    print(game_dep)
+    if ":" in game_id:
+        game_id = game[5:7]
+        game_dep = game[8:]
+        print(game_dep)
+        if ':' in game_id:
+            game_id = game[5:6]
+            game_dep = game[7:]
+    else:
+        game_dep = game[8:]
+
     while ok:
         for results in game_dep.split(";"):
             for color in results.split(","):
@@ -143,7 +146,7 @@ for game in data.split('\n'):
                         if int(color[1]) > content['blue']:
                             ok = False
         if ok:
-            result += game_id
+            result += int(game_id)
         ok = False
 
 print(result)
