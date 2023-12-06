@@ -111,7 +111,6 @@ for game in data.split('\n'):
     if ":" in game_id:
         game_id = game[5:7]
         game_dep = game[8:]
-        print(game_dep)
         if ':' in game_id:
             game_id = game[5:6]
             game_dep = game[7:]
