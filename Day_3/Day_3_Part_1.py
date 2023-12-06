@@ -10,8 +10,14 @@ data = """467..114..
 .664.598.."""
 
 for lig in data.split('\n'):
+    list_nb = []
+    nb = ""
     for character in lig:
         try:
-            int(character)
+            nb = nb + character
         except ValueError:
-            pass
+            if nb != "":
+                list_nb.append(nb)
+                nb = ""
+
+    print(list_nb)
