@@ -39,7 +39,6 @@ for i in range(len(tableau)):
     nb_row = []
     chiffre = ""
     for y in range(len(tableau[i])):
-        # chiffre = ""
         ok = True
         for direction in directions:
             try:
@@ -47,7 +46,6 @@ for i in range(len(tableau)):
                     if (tableau[i + direction[0]][y + direction[1]].isdigit()
                             or tableau[i + direction[0]][y + direction[1]] == "."):
                         pass
-                        # print(tableau[i][y])
                     else:
                         ok = False
                         chiffre = ''
@@ -59,8 +57,8 @@ for i in range(len(tableau)):
         else:
             nb_row.append(chiffre)
             chiffre = ""
-
     new_tab.append(nb_row)
+
 
 to_do_sum = []
 
@@ -70,10 +68,10 @@ for li in range(len(compar)):
             if nb not in new_tab[li]:
                 to_do_sum.append(nb)
 
-sum = 0
+somme = 0
 for to in to_do_sum:
-    sum = sum + int(to)
-print(sum)
+    somme = somme + int(to)
+print(somme)
 
 
 
