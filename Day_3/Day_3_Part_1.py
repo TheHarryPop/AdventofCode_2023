@@ -1,5 +1,5 @@
-data = """467..114.9
-.k.*....e.
+data = """467..114..
+...*......
 ..35..633.
 ......#...
 617*......
@@ -9,359 +9,74 @@ data = """467..114.9
 ...$.*....
 .664.598.."""
 
+# Le but est de relever les nombres qui sont adjacents a des symboles puis faire la somme -> 4361 ici
 
-def is_integer(n):
-    try:
-        int(n)
-        return True
-    except ValueError:
-        return False
-
-
+# direction(tableau_index, position_valeur)
+directions = ((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 0), (0, 1), (1, -1), (1, 0), (1, 1))
 list_data = []
 suite = []
 
-for row in data.split('\n'):
-    list_prov = []
-    for char in row:
+
+tableau = [x for x in data.split('\n')]
+
+compar = []
+
+for ligne in tableau:
+    tab = []
+    nb = ""
+    for char in ligne:
         try:
-            list_prov.append(int(char))
+            nb = nb + str(int(char))
         except ValueError:
-            list_prov.append(char)
-    list_data.append(list_prov)
+            tab.append(nb)
+            nb = ""
 
-i_prec = None
-i_actu = None
-i_suiv = None
+    compar.append(tab)
 
-for i in list_data:
+new_tab = []
 
-    suite_prov = []
-    nombre_prov = ''
+for i in range(len(tableau)):
+    nb_row = []
+    chiffre = ""
+    for y in range(len(tableau[i])):
+        # chiffre = ""
+        ok = True
+        for direction in directions:
+            try:
+                if 0 <= i + direction[0] < len(tableau) and 0 <= y + direction[1] <= len(tableau[i + direction[0]]):
+                    if (tableau[i + direction[0]][y + direction[1]].isdigit()
+                            or tableau[i + direction[0]][y + direction[1]] == "."):
+                        pass
+                        # print(tableau[i][y])
+                    else:
+                        ok = False
+                        chiffre = ''
+                        break
+            except IndexError:
+                pass
+        if ok and tableau[i][y] != '.':
+            chiffre = chiffre + f"{(tableau[i][y])}"
+        else:
+            nb_row.append(chiffre)
+            chiffre = ""
 
-    if not i_prec and not i_actu:
-        i_actu = i
-        i_suiv = list_data[list_data.index(i)+1]
-    else:
-        i_prec = i_actu
-        i_actu = i
-        try:
-            i_suiv = list_data[list_data.index(i) + 1]
-        except IndexError:
-            i_suiv = []
+    new_tab.append(nb_row)
 
-    # premiere suite de symboles -> OK detecter si symbole en peripherie
-    if list_data[0] == i:
-        for y in range(len(i)):
-            # premier element de la suite
-            if y == 0 and is_integer(i[y]):
-                if not i[y+1] == ".":
-                    try:
-                        int(i[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y] == ".":
-                    try:
-                        int(i_suiv[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_suiv[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y+1] == ".":
-                    try:
-                        int(i_suiv[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_suiv[y + 1]}")
-                        suite_prov.append(nombre_prov)
-            # dernier element de la suite
-            elif y == len(i) - 1 and is_integer(i[y]):
-                if not i[y - 1] == ".":
-                    try:
-                        int(i[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i[y - 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y] == ".":
-                    try:
-                        int(i_suiv[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i_suiv[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y - 1] == ".":
-                    try:
-                        int(i_suiv[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i_suiv[y - 1]}")
-                        suite_prov.append(nombre_prov)
+to_do_sum = []
 
-            # entre le premier et le dernier element
-            elif is_integer(i[y]):
-                if not i[y + 1] == ".":
-                    try:
-                        int(i[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i[y - 1] == ".":
-                    try:
-                        int(i[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i[y - 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y] == ".":
-                    try:
-                        int(i_suiv[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_suiv[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y + 1] == ".":
-                    try:
-                        int(i_suiv[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_suiv[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y - 1] == ".":
-                    try:
-                        int(i_suiv[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_suiv[y - 1]}")
-                        suite_prov.append(nombre_prov)
+for li in range(len(compar)):
+    for nb in compar[li]:
+        if nb != '':
+            if nb not in new_tab[li]:
+                to_do_sum.append(nb)
 
-    # derniere suite de symboles -> OK detecter si symbole en peripherie
-    elif list_data[-1] == i:
-        for y in range(len(i)):
-            # premier element de la suite
-            if y == 0 and is_integer(i[y]):
-                if not i[y + 1] == ".":
-                    try:
-                        int(i[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y] == ".":
-                    try:
-                        int(i_prec[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_prec[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y + 1] == ".":
-                    try:
-                        int(i_prec[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_prec[y + 1]}")
-                        suite_prov.append(nombre_prov)
-            # dernier element de la suite
-            elif y == len(i) - 1 and is_integer(i[y]):
-                if not i[y - 1] == ".":
-                    try:
-                        int(i[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i[y - 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y] == ".":
-                    try:
-                        int(i_prec[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i_prec[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y - 1] == ".":
-                    try:
-                        int(i_prec[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i_prec[y - 1]}")
-                        suite_prov.append(nombre_prov)
+sum = 0
+for to in to_do_sum:
+    sum = sum + int(to)
+print(sum)
 
-            # entre le premier et le dernier element
-            elif is_integer(i[y]):
-                if not i[y + 1] == ".":
-                    try:
-                        int(i[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i[y - 1] == ".":
-                    try:
-                        int(i[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i[y - 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y] == ".":
-                    try:
-                        int(i_prec[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_prec[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y + 1] == ".":
-                    try:
-                        int(i_prec[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_prec[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y - 1] == ".":
-                    try:
-                        int(i_prec[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_prec[y - 1]}")
-                        suite_prov.append(nombre_prov)
 
-    # suites de symboles entre la premiere et la derniere
-    else:
-        for y in range(len(i)):
-            # premier element de la suite
-            if y == 0 and is_integer(i[y]):
-                if not i[y + 1] == ".":
-                    try:
-                        int(i[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y] == ".":
-                    try:
-                        int(i_suiv[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_suiv[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y + 1] == ".":
-                    try:
-                        int(i_suiv[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_suiv[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y] == ".":
-                    try:
-                        int(i_prec[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_prec[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y + 1] == ".":
-                    try:
-                        int(i_prec[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_prec[y + 1]}")
-                        suite_prov.append(nombre_prov)
 
-            # dernier element de la suite
-            elif y == len(i) - 1 and is_integer(i[y]):
-                if not i[y - 1] == ".":
-                    try:
-                        int(i[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i[y - 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y] == ".":
-                    try:
-                        int(i_suiv[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i_suiv[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y - 1] == ".":
-                    try:
-                        int(i_suiv[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"derns faux c'est marque {i_suiv[y - 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y] == ".":
-                    try:
-                        int(i_prec[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_prec[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y - 1] == ".":
-                    try:
-                        int(i_prec[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"prems faux c'est marque {i_prec[y - 1]}")
-                        suite_prov.append(nombre_prov)
 
-            # entre le premier et le dernier element
-            elif is_integer(i[y]):
-                if not i[y + 1] == ".":
-                    try:
-                        int(i[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i[y - 1] == ".":
-                    try:
-                        int(i[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i[y - 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y] == ".":
-                    try:
-                        int(i_suiv[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_suiv[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y + 1] == ".":
-                    try:
-                        int(i_suiv[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_suiv[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_suiv[y - 1] == ".":
-                    try:
-                        int(i_suiv[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_suiv[y - 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y] == ".":
-                    try:
-                        int(i_prec[y])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_prec[y]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y + 1] == ".":
-                    try:
-                        int(i_prec[y + 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_prec[y + 1]}")
-                        suite_prov.append(nombre_prov)
-                if not i_prec[y - 1] == ".":
-                    try:
-                        int(i_prec[y - 1])
-                        nombre_prov = nombre_prov + str(i[y])
-                    except ValueError:
-                        print(f"mids faux c'est marque {i_prec[y - 1]}")
-                        suite_prov.append(nombre_prov)
-    suite.append(suite_prov)
-print(suite)
+
+
