@@ -5,7 +5,15 @@ Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
 Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
 Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
 
+# Le but est de comparer les deux parties de chaque Card
+# Si un nombre ou chiffre est présent dans les deux parties, on marque des points
+# Les points doublent par paires dans chaque card
+# Dans la card 1 on a en double : 48 83 86 17 -> 1, 2, 4, 8 points au total
+# Combien de points au total pour toutes ces cards ?
+
 tableau = [x[8:] for x in data.split('\n')]
 
 to_compare = [carte.split('| ') for carte in tableau]
+
+print(to_compare)
 
