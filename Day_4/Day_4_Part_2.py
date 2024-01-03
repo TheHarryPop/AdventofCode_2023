@@ -4,7 +4,10 @@ Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
 Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
 Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
 Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
-Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
+Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
+Card 7: 32 18 13 56 11 | 32 77 10 23 35 67 36 11
+Card 8: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
+Card 9: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
 
 data = """Card   1: 87 75 80 68 71 57 58 59 70 48 | 56 67 75 76 31 49 48 22 43 68 98 86 70 91 27 46  4 87 72 37 71 58 29 79 80
 Card   2: 95 97 90 91 79 71 60 87 46 80 | 28 90 55 87 82 34 44 96 77 15 22 63 31 33  5 99 36 91 17 10 64 59 68 37 13
@@ -213,42 +216,46 @@ Card 203: 12 10 29 80 87 71 65 37 55  9 | 11  5 75 46  3 81  6 54 64 32 95 33 49
 # Le but est de comparer les deux parties de chaque Card
 # Si un nombre ou chiffre est présent dans les deux parties, on marque un point par nombre
 # suivant le nombre de points gagnés par carte, on double les cartes suivantes équivalentes
-# Dans la card 1 on a en double : 48 83 86 17 -> 1, 2, 3, 4 points au total
+# Dans la card 1 on a en double : 48 83 86 17 → 1, 2, 3, 4 points au total
 # Donc on obtient une copie des cards 2, 3, 4, 5
-# Dans la card 2 on obtient 2 points -> donc encore une copie de la card 3 & 4
+# Dans la card 2 on obtient 2 points → donc encore une copie de la card 3 & 4
 # La copie de la card 2 obtient également le même nombre de points et donc de copies...
 # Combien de cards au total aura-t-on gratté ?
 
-tableau = [x[8:] for x in data_test.split('\n')]
+tableau = [x[8:] for x in data.split('\n')]
 
 # nombre de cards de départ (cards x = 1)
 cards = [[i, 1] for i, x in enumerate(tableau, start=1)]
-print(cards)
+
+
 to_compare = [carte.split('| ') for carte in tableau]
 
 score_total = 0
 
 for i, liste in enumerate(to_compare, start=1):
+    print(cards)
+
     nombre_a_comparer = ''
     score_temp = 0
     for number in to_compare[i-1][0]:
         if number == ' ' and nombre_a_comparer != '':
             for num in to_compare[i-1][1].split(' '):
                 if nombre_a_comparer == num:
-                    if score_temp == 0:
-                        score_temp = 1
-                    else:
-                        score_temp *= 2
+                    score_temp += 1
             nombre_a_comparer = ''
         elif number != ' ':
             nombre_a_comparer += number
-        else:
-            pass
-    score_total += score_temp
+    # Nombre de cards qui vont donner le même résultat
+    nb_cards = 0
+    for y in range(cards[i-1][1]):
+        nb_cards = y + 1
 
-score_total = [sum(card[1]) for card in cards]
+    if score_temp:
+        for z in range(nb_cards):
+            for aa in range(score_temp):
+                cards[i-1 + (aa+1)][1] += 1
 
 for card in cards:
-    print(card[1])
+    score_total += card[1]
 
 print(score_total)
