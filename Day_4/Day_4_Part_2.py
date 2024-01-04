@@ -234,6 +234,7 @@ for i, liste in enumerate(to_compare, start=1):
             for num in to_compare[i-1][1].split(' '):
                 if nombre_a_comparer == num:
                     score_card += 1
+                    break
             nombre_a_comparer = ''
         elif number != ' ':
             nombre_a_comparer += number
