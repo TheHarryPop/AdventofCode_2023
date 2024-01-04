@@ -4,10 +4,7 @@ Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
 Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
 Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
 Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
-Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
-Card 7: 32 18 13 56 11 | 32 77 10 23 35 67 36 11
-Card 8: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
-Card 9: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
+Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"""
 
 data = """Card   1: 87 75 80 68 71 57 58 59 70 48 | 56 67 75 76 31 49 48 22 43 68 98 86 70 91 27 46  4 87 72 37 71 58 29 79 80
 Card   2: 95 97 90 91 79 71 60 87 46 80 | 28 90 55 87 82 34 44 96 77 15 22 63 31 33  5 99 36 91 17 10 64 59 68 37 13
@@ -227,34 +224,27 @@ tableau = [x[8:] for x in data.split('\n')]
 # nombre de cards de départ (cards x = 1)
 cards = [[i, 1] for i, x in enumerate(tableau, start=1)]
 
-
 to_compare = [carte.split('| ') for carte in tableau]
 
-score_total = 0
-
 for i, liste in enumerate(to_compare, start=1):
-    print(cards)
-
     nombre_a_comparer = ''
-    score_temp = 0
+    score_card = 0
     for number in to_compare[i-1][0]:
         if number == ' ' and nombre_a_comparer != '':
             for num in to_compare[i-1][1].split(' '):
                 if nombre_a_comparer == num:
-                    score_temp += 1
+                    score_card += 1
             nombre_a_comparer = ''
         elif number != ' ':
             nombre_a_comparer += number
-    # Nombre de cards qui vont donner le même résultat
-    nb_cards = 0
-    for y in range(cards[i-1][1]):
-        nb_cards = y + 1
 
-    if score_temp:
-        for z in range(nb_cards):
-            for aa in range(score_temp):
-                cards[i-1 + (aa+1)][1] += 1
+    # Nombre de cards qui vont donner le même résultat -> cards[i-1][1]
+    if score_card:
+        for card in range(cards[i-1][1]):
+            for card_supp in range(score_card):
+                cards[i + card_supp][1] += 1
 
+score_total = 0
 for card in cards:
     score_total += card[1]
 
