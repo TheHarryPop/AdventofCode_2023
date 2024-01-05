@@ -11,12 +11,12 @@
     Part_2 = OK
 ### Day_3 :
 
-    Part_1 = OK
+    Part_1 = NOK
     Part_2 = NOK
 ### Day_4 :
 
     Part_1 = OK
-    Part_2 = NOK
+    Part_2 = OK
 ### Day_5 :
 
     Part_1 = NOK
