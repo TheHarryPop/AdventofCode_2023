@@ -304,7 +304,30 @@ for rule in list_rules:
         prov = []
 #######################################################
 # Construction d'une liste "suites" regroupant les tableaux pour chaque correspondance
-suites = []
+# suites = []
+# for cond in rules[seeds]:
+#     cond_values = []
+#     for value in cond:
+#         try:
+#             int(value[0])
+#             val_prov = []
+#             for val in value.split(" "):
+#                 val_prov.append(int(val))
+#             cond_values.append(val_prov)
+#         except ValueError:
+#             pass
+#     suite = []
+#     y = 0
+#     for value in cond_values:
+#         for i in range(value[0], value[0] + value[2]):
+#             correspondance = (i, value[1]+y)
+#             suite.append(correspondance)
+#             y += 1
+#         y = 0
+#     suites.append(suite)
+##########################################################
+# Construction de la liste (cond_values) des conditions des correspondances
+
 for cond in rules[seeds]:
     cond_values = []
     for value in cond:
@@ -316,30 +339,38 @@ for cond in rules[seeds]:
             cond_values.append(val_prov)
         except ValueError:
             pass
-    suite = []
-    y = 0
-    for value in cond_values:
-        for i in range(value[0], value[0] + value[2]):
-            correspondance = (i, value[1]+y)
-            suite.append(correspondance)
-            y += 1
-        y = 0
-    suites.append(suite)
+    # boucle for values in cond_values:
+        # if values[0] < seed < values[0] + values[2]:
+            #
+    print(cond_values)
+
 ##########################################################
+
+# resultat = []
+#
+# for seed in seeds[7:].split(" "):
+#     valeur_provisoire = int(seed)
+#     correspondance = None
+#     for suite in suites:  # suite = un tableau par correspondance (tableau seed to soil par exemple)
+#         for value in suite:
+#             if value[1] == valeur_provisoire:
+#                 correspondance = value[0]
+#         if not correspondance:
+#             correspondance = valeur_provisoire
+#         valeur_provisoire = correspondance
+#     resultat.append(valeur_provisoire)
+#
+# print(resultat)
+
 
 resultat = []
 
 for seed in seeds[7:].split(" "):
     valeur_provisoire = int(seed)
     correspondance = None
-    for suite in suites:  # suite = un tableau par correspondance (tableau seed to soil par exemple)
-        for value in suite:
-            if value[1] == valeur_provisoire:
-                correspondance = value[0]
-        if not correspondance:
-            correspondance = valeur_provisoire
-        valeur_provisoire = correspondance
-    resultat.append(valeur_provisoire)
+    suites = []
+
+
 
 print(resultat)
 
