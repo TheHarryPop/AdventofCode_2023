@@ -349,17 +349,24 @@ for seed in seeds[7:].split(" "):
     valeur_provisoire = int(seed)
     correspondance = None
     for type_values in cond_values:
-        print(valeur_provisoire)
         for values in type_values:
             print(values)
-            if values[0] < int(seed) < values[0] + values[2]:
-                correspondance = valeur_provisoire + values[1]-values[0]
+            if values[1] <= valeur_provisoire <= (values[1] + values[2]):
+                print(f"valeur_prov = {valeur_provisoire}")
+                print(f"{values[1]} <= {valeur_provisoire} <= {(values[1] + values[2])}")
+                print(f"Values sélectionnées : {values}")
+                print(f"plage = {values[0]} | {values[0] + values[2]}")
+                correspondance = valeur_provisoire - values[1]+values[0]
+                valeur_provisoire = correspondance
+                print(f"correspondance = {correspondance}")
+                print("________________________________________________")
             else:
                 correspondance = valeur_provisoire
         valeur_provisoire = correspondance
     resultat.append(valeur_provisoire)
 
 print(resultat)
+print(f"Résultats attendus : 82, 43, 86, 35")
 
 
 ##########################################################
