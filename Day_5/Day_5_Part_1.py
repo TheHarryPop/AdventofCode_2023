@@ -291,7 +291,7 @@ humidity-to-location map:
 
 #######################################################
 # Construction d'un dictionnaire "rules" contenant les règles de l'almanach
-list_rules = [ligne for ligne in data.split('\n')]
+list_rules = [ligne for ligne in data_test.split('\n')]
 seeds = list_rules[0]
 rules: dict = {seeds: []}
 list_rules = list_rules[2:]
@@ -327,22 +327,40 @@ for rule in list_rules:
 #     suites.append(suite)
 ##########################################################
 # Construction de la liste (cond_values) des conditions des correspondances
-
+cond_values = []
 for cond in rules[seeds]:
-    cond_values = []
+    vals_prov = []
     for value in cond:
+
         try:
             int(value[0])
             val_prov = []
             for val in value.split(" "):
                 val_prov.append(int(val))
-            cond_values.append(val_prov)
+            vals_prov.append(val_prov)
         except ValueError:
-            pass
-    # boucle for values in cond_values:
-        # if values[0] < seed < values[0] + values[2]:
-            #
-    print(cond_values)
+            cond_values.append(vals_prov)
+
+print(cond_values)
+
+resultat = []
+for seed in seeds[7:].split(" "):
+    print(f"--------------------------seed = {seed} ---------------------------------")
+    valeur_provisoire = int(seed)
+    correspondance = None
+    for type_values in cond_values:
+        print(valeur_provisoire)
+        for values in type_values:
+            print(values)
+            if values[0] < int(seed) < values[0] + values[2]:
+                correspondance = valeur_provisoire + values[1]-values[0]
+            else:
+                correspondance = valeur_provisoire
+        valeur_provisoire = correspondance
+    resultat.append(valeur_provisoire)
+
+print(resultat)
+
 
 ##########################################################
 
@@ -361,18 +379,6 @@ for cond in rules[seeds]:
 #     resultat.append(valeur_provisoire)
 #
 # print(resultat)
-
-
-resultat = []
-
-for seed in seeds[7:].split(" "):
-    valeur_provisoire = int(seed)
-    correspondance = None
-    suites = []
-
-
-
-print(resultat)
 
 end = time.time()
 
