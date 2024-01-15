@@ -318,7 +318,13 @@ for cond in rules[seeds]:
         except ValueError:
             cond_values.append(vals_prov)
 resultat = []
+seed_range = []
+seeds_list = []
 for seed in seeds[7:].split(" "):
+    seed_range.append(seed)
+list_1 = [seeds_list.append(int(seed_range[0]) + x) for x in range(int(seed_range[1]))]
+list_2 = [seeds_list.append(int(seed_range[2]) + x) for x in range(int(seed_range[3]))]
+for seed in seeds_list:
     valeur_provisoire = int(seed)
     correspondance = None
     for type_values in cond_values:
