@@ -291,7 +291,7 @@ humidity-to-location map:
 
 #######################################################
 # Construction d'un dictionnaire "rules" contenant les règles de l'almanach
-list_rules = [ligne for ligne in data_test.split('\n')]
+list_rules = [ligne for ligne in data.split('\n')]
 seeds = list_rules[0]
 rules: dict = {seeds: []}
 list_rules = list_rules[2:]
@@ -302,29 +302,7 @@ for rule in list_rules:
     else:
         rules[seeds].append(prov)
         prov = []
-#######################################################
-# Construction d'une liste "suites" regroupant les tableaux pour chaque correspondance
-# suites = []
-# for cond in rules[seeds]:
-#     cond_values = []
-#     for value in cond:
-#         try:
-#             int(value[0])
-#             val_prov = []
-#             for val in value.split(" "):
-#                 val_prov.append(int(val))
-#             cond_values.append(val_prov)
-#         except ValueError:
-#             pass
-#     suite = []
-#     y = 0
-#     for value in cond_values:
-#         for i in range(value[0], value[0] + value[2]):
-#             correspondance = (i, value[1]+y)
-#             suite.append(correspondance)
-#             y += 1
-#         y = 0
-#     suites.append(suite)
+
 ##########################################################
 # Construction de la liste (cond_values) des conditions des correspondances
 cond_values = []
@@ -341,52 +319,23 @@ for cond in rules[seeds]:
         except ValueError:
             cond_values.append(vals_prov)
 
-print(cond_values)
-
 resultat = []
 for seed in seeds[7:].split(" "):
-    print(f"--------------------------seed = {seed} ---------------------------------")
     valeur_provisoire = int(seed)
     correspondance = None
     for type_values in cond_values:
         for values in type_values:
-            print(values)
             if values[1] <= valeur_provisoire <= (values[1] + values[2]):
-                print(f"valeur_prov = {valeur_provisoire}")
-                print(f"{values[1]} <= {valeur_provisoire} <= {(values[1] + values[2])}")
-                print(f"Values sélectionnées : {values}")
-                print(f"plage = {values[0]} | {values[0] + values[2]}")
-                correspondance = valeur_provisoire - values[1]+values[0]
+                correspondance = valeur_provisoire - values[1] + values[0]
                 valeur_provisoire = correspondance
-                print(f"correspondance = {correspondance}")
-                print("________________________________________________")
+                break
             else:
                 correspondance = valeur_provisoire
         valeur_provisoire = correspondance
     resultat.append(valeur_provisoire)
 
+resultat.sort()
 print(resultat)
-print(f"Résultats attendus : 82, 43, 86, 35")
-
-
-##########################################################
-
-# resultat = []
-#
-# for seed in seeds[7:].split(" "):
-#     valeur_provisoire = int(seed)
-#     correspondance = None
-#     for suite in suites:  # suite = un tableau par correspondance (tableau seed to soil par exemple)
-#         for value in suite:
-#             if value[1] == valeur_provisoire:
-#                 correspondance = value[0]
-#         if not correspondance:
-#             correspondance = valeur_provisoire
-#         valeur_provisoire = correspondance
-#     resultat.append(valeur_provisoire)
-#
-# print(resultat)
 
 end = time.time()
-
 print(f"Execution time : {end - start} seconds")
