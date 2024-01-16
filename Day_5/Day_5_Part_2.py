@@ -262,7 +262,10 @@ humidity-to-location map:
 1623954693 4059300793 74879205
 """
 
-# La première ligne de l'input contient 4 graines identifiées 79, 14, 55, & 13
+# La première ligne de l'input contient nombres qui fonctionnent par paires : 79, 14, 55, & 13
+# 79 = graine de départ
+# 14 = plage
+# Ce qui donne → 79, 80, 81...91, 92
 # Les catégories suivantes correspondent à des paramètres :
 #   seed to soil : permet de déterminer quel sol en fonction de quelle graine
 #       50 98 2 :
@@ -285,7 +288,6 @@ humidity-to-location map:
 #   light to temperature : permet de déterminer quelle température en fonction de quel ensoleillement
 #   temperature to humidity : permet de déterminer quelle humidité en fonction de quelle température
 #   humidity to location : permet de déterminer quel emplacement en fonction de quelle humidité
-# Avec les quatre graines de départ, on va déterminer à la fin quatre emplacements.
 # Le but est de donner l'emplacement le plus proche de 0.
 
 
@@ -322,8 +324,13 @@ seed_range = []
 seeds_list = []
 for seed in seeds[7:].split(" "):
     seed_range.append(seed)
-list_1 = [seeds_list.append(int(seed_range[0]) + x) for x in range(int(seed_range[1]))]
-list_2 = [seeds_list.append(int(seed_range[2]) + x) for x in range(int(seed_range[3]))]
+q = 0
+for i in range(int(len(seed_range)/2)):
+    list_1 = [seeds_list.append(int(seed_range[q]) + x) for x in range(int(seed_range[q+1]))]
+    q += 2
+
+# Ne pas faire de liste de graines mais tester les graines dans les boucles et break une fois qu'une correspondance est trouvée
+
 for seed in seeds_list:
     valeur_provisoire = int(seed)
     correspondance = None
